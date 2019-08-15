@@ -1,5 +1,6 @@
 class JobsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :update, :edit, :descroy]
+  before_action :validate_search_key, only: [:search]
   def index
     @jobs = case params[:order]
             when 'by_lower_bound'
@@ -49,6 +50,25 @@ class JobsController < ApplicationController
     @job = Job.find(params[:id])
     @job.destroy
     redirect_to jobs_path, :alert => "删除成功"
+  end
+
+  def search
+    if @query_string.present?
+      search_result = Job.published.ransack(@search_criteria).result(:distinct => true)
+      @jobs = search_result.paginate(:page => params[:page], :per_page => 20 )
+    end
+  end
+
+  protected
+
+  def validate_search_key
+    @query_string = params[:q].gsub(/\\|\'|\/|\?/, "") if params[:q].present?
+    @search_criteria = search_criteria(@query_string)
+  end
+
+
+  def search_criteria(query_string)
+    { :title_description_cont => query_string } #搜索匹配title和description，可以加其他关键词匹配
   end
 
   private
