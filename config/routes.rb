@@ -1,11 +1,19 @@
 Rails.application.routes.draw do
   devise_for :users
-  root 'jobs#index'
+  root 'welcome#index'
 
   resources :jobs do
     resources :resumes
     collection do
       get :search
+      get :information
+      get :education
+      get :medical
+      get :manage
+      get :page_design
+      get :operation
+      get :marketing
+      get :administrative
     end
   end
 

@@ -10,7 +10,7 @@ class JobsController < ApplicationController
             else
               Job.published.recent
             end
-  end
+          end
 
   def show
     @job = Job.find(params[:id])
@@ -50,6 +50,38 @@ class JobsController < ApplicationController
     @job = Job.find(params[:id])
     @job.destroy
     redirect_to jobs_path, :alert => "删除成功"
+  end
+
+  def information
+    @jobs = Job.published.where(:category_id => 1).recent.paginate(:page => params[:page], :per_page => 5)
+  end
+
+  def marketing
+    @jobs = Job.published.where(:category_id => 2).recent.paginate(:page => params[:page], :per_page => 5)
+  end
+
+  def education
+    @jobs =  Job.published.where(:category_id => 3).recent.paginate(:page => params[:page], :per_page => 5)
+  end
+
+  def medical
+    @jobs = Job.published.where(:category_id => 4).recent.paginate(:page => params[:page], :per_page => 5)
+  end
+
+  def operation
+    @jobs = Job.published.where(:category_id => 5).recent.paginate(:page => params[:page], :per_page => 5)
+  end
+
+  def page_design
+    @jobs = Job.published.where(:category_id => 6).recent.paginate(:page => params[:page], :per_page => 5)
+  end
+
+  def manage
+    @jobs = Job.published.where(:category_id => 7).recent.paginate(:page => params[:page], :per_page => 5)
+  end
+
+  def administrative
+    @jobs = Job.published.where(:category_id => 8).recent.paginate(:page => params[:page], :per_page => 5)
   end
 
   def search
