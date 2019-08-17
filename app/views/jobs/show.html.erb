@@ -1,6 +1,6 @@
 <h1><%= @job.title %></h1>
 <p><%= simple_format(@job.description)%></p>
-
+<%= social_share_button_tag(@job.title) %><!-- 社交分享 -->
 <div class="text-center">
   <%= link_to("投简历", new_job_resume_path(@job), :class => "btn btn-default btn-lg")%>
 </div>
