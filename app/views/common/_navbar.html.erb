@@ -1,6 +1,6 @@
 
 <nav class="navbar navbar-default">
-  <div class="container-fluid ">
+  <div class="container-fluid col-md-8 col-md-offset-2">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Job Listing</a>
+      <a class="navbar-brand" href="/">DJK Offer</a>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -43,8 +43,8 @@
            </ul>
       <ul class="nav navbar-nav navbar-right">
         <% if !current_user %>
-        <li><%= link_to("注册", new_user_registration_path) %></li>
-        <li><%= link_to("登入", new_user_session_path) %></li>
+        <li><a href="#" data-toggle="modal" data-target="#signup-modal">注册</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#login-modal">登入</a></li>
         <% else %>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -54,21 +54,60 @@
                 <ul class="dropdown-menu">
                   <% if current_user.is_admin %>
                   <li>
-                    <span class="fa fa-check-square-o">
-                      <%= link_to("Admin", admin_jobs_path)%>
-                    </span>
-                    </li>
+                      <%= link_to admin_jobs_path do%>
+                    <i class="fa fa-check-square-o">Admin</i>
+                    <% end %>
+                  </li>
                   <% end %>
                    <li class="divider"></li>
                   <li>
-                    <span class="fa fa-sign-out ">
-                    <%= link_to("Logout", destroy_user_session_path, method: :delete) %>
-                    </span>
+                    <%= link_to destroy_user_session_path, method: :delete do %>
+                    <i class="fa fa-sign-out ">Logout</i>
+                   <% end %>
                   </li>
+                  <% end %>
                 </ul>
-                <% end %>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
+<!-- 以下代码添加在最后 -->
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog" role="document">
+    <div class="loginmodal-container">
+
+       <h2 class="text-center"><i class="fa fa-sign-out "></i>DJK Offer</h2>
+       <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+         <div class="form-inputs">
+           <%= f.input :email, label: "邮箱", required: false, autofocus: true %>
+           <%= f.input :password,label: "邮箱", required: false %>
+           <%= f.input :remember_me,label: "记住密码", as: :boolean if devise_mapping.rememberable? %>
+         </div>
+         <div class="form-actions">
+           <%= f.button :submit, "登入" %>
+         </div>
+       <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="loginmodal-container">
+      <h2 class="text-center"><i class="fa fa-sign-out "></i>DJK Offer</h2>
+        <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= f.error_notification %>
+        <div class="form-inputs">
+          <%= f.input :email, label: "邮箱", required: true, autofocus: true %>
+          <%= f.input :password, label: "密码", required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
+          <%= f.input :password_confirmation, label: "记住密码",required: true %>
+        </div>
+        <div class="form-actions">
+            <%= f.button :submit, "注册" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -18,4 +18,5 @@
 //= require bootstrap/collapse
 //= require social-share-button
 //= require social-share-button/wechat
+//= require bootstrap/modal
 //= require_tree .
